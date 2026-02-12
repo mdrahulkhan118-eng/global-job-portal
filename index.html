@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Job Portal - Md Rahul Khan</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#f4f6f9;color:#333;transition:0.3s;}
+.dark{background:#111827;color:white;}
+header{background:#2563eb;color:white;padding:20px;text-align:center;}
+.container{padding:20px;max-width:900px;margin:auto;}
+.card{background:white;padding:20px;margin-bottom:20px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.05);}
+.dark .card{background:#1f2937;}
+input,textarea,button{
+  width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc;
+}
+button{
+  background:#2563eb;color:white;border:none;cursor:pointer;font-weight:600;
+}
+button:hover{opacity:0.9;}
+.toggle-btn{
+  position:fixed;top:15px;right:15px;padding:8px 12px;
+}
+.hidden{display:none;}
+.job{padding:10px;background:#e5e7eb;margin-top:10px;border-radius:8px;}
+.dark .job{background:#374151;}
+</style>
+</head>
+
+<body>
+
+<button class="toggle-btn" onclick="toggleDark()">🌙 Toggle Mode</button>
+
+<header>
+<h1>🌍 Global Job Portal</h1>
+<p>Dashboard System - Md Rahul Khan</p>
+</header>
+
+<div class="container">
+
+<!-- Login/Register -->
+<div id="authSection" class="card">
+<h2>Login / Register</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="register()">Register</button>
+<button onclick="login()">Login</button>
+<p id="authMessage"></p>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard" class="hidden">
+
+<div class="card">
+<h2>📊 Admin Dashboard</h2>
+<p>Welcome, <span id="userDisplay"></span></p>
+<button onclick="logout()">Logout</button>
+</div>
+
+<!-- Job Post -->
+<div class="card">
+<h2>📝 Add Job Post</h2>
+<input type="text" id="jobTitle" placeholder="Job Title">
+<textarea id="jobDesc" placeholder="Job Description"></textarea>
+<button onclick="addJob()">Post Job</button>
+<div id="jobList"></div>
+</div>
+
+<!-- CV Upload -->
+<div class="card">
+<h2>💼 Upload CV</h2>
+<input type="file" id="cvFile">
+<button onclick="uploadCV()">Upload</button>
+<p id="cvMessage"></p>
+</div>
+
+</div>
+
+</div>
+
+<script>
+function toggleDark(){
+  document.body.classList.toggle("dark");
+}
+
+/* Register */
+function register(){
+  let user=document.getElementById("username").value;
+  let pass=document.getElementById("password").value;
+
+  if(user && pass){
+    localStorage.setItem("user",user);
+    localStorage.setItem("pass",pass);
+    document.getElementById("authMessage").innerText="Registered Successfully!";
+  }else{
+    document.getElementById("authMessage").innerText="Fill all fields!";
+  }
+}
+
+/* Login */
+function login(){
+  let user=document.getElementById("username").value;
+  let pass=document.getElementById("password").value;
+
+  if(user===localStorage.getItem("user") && pass===localStorage.getItem("pass")){
+    document.getElementById("authSection").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+    document.getElementById("userDisplay").innerText=user;
+  }else{
+    document.getElementById("authMessage").innerText="Invalid Login!";
+  }
+}
+
+/* Logout */
+function logout(){
+  document.getElementById("authSection").classList.remove("hidden");
+  document.getElementById("dashboard").classList.add("hidden");
+}
+
+/* Add Job */
+function addJob(){
+  let title=document.getElementById("jobTitle").value;
+  let desc=document.getElementById("jobDesc").value;
+
+  if(title && desc){
+    let jobDiv=document.createElement("div");
+    jobDiv.classList.add("job");
+    jobDiv.innerHTML="<strong>"+title+"</strong><p>"+desc+"</p>";
+    document.getElementById("jobList").appendChild(jobDiv);
+  }
+}
+
+/* Upload CV */
+function uploadCV(){
+  let file=document.getElementById("cvFile").files[0];
+  if(file){
+    document.getElementById("cvMessage").innerText="Uploaded: "+file.name;
+  }else{
+    document.getElementById("cvMessage").innerText="Select a file first!";
+  }
+}
+</script>
+
+</body>
+</html>
